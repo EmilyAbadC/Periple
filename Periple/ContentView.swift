@@ -1,21 +1,38 @@
-//
-//  ContentView.swift
-//  Periple
-//
-//  Created by Emily Abad on 11/24/26.
-//
 
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentScreen = 0
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            switch currentScreen {
+            case 0:
+                WelcomeView {
+                    navigate(to: 1)
+                }
+
+            case 1:
+                CreateTripView(
+                    onBack: {
+                        navigate(to: 0)
+                    },
+                    onCreate: {
+                        navigate(to: 2)
+                    }
+                )
+
+            default:
+                MainTabView()
+            }
         }
-        .padding()
+        .preferredColorScheme(.light)
+    }
+
+    private func navigate(to screen: Int) {
+        withAnimation(.easeInOut(duration: 0.25)) {
+            currentScreen = screen
+        }
     }
 }
 
